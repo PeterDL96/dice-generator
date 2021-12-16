@@ -1,16 +1,18 @@
 import PySimpleGUI as sg
 import random
 
-faces = 6
 
 def main():
 
-    sg.theme('DarkAmber')
+    sg.theme('DarkBlue2')
 
     dice_dict = {}
 
+    existing_dice = [3,4,6,8,10,12,20,100]
+
     layout = [  [sg.Text('Welcome to Dice generator', key='-WELCOME-')],
-                [sg.Text('What kind of dice do you want to roll?'), sg.Input(size=4, default_text='6', key='-FACES-')],
+                [sg.Text('What kind of dice do you want to roll?'), 
+                sg.Spin(values=existing_dice, size=4, initial_value=6, readonly=True, key='-FACES-')],
                 [sg.Text('How many dice do you need to roll?'), sg.Input(size=5, key='-DICE-')],
                 [sg.Button('Roll those dice !!!', key='-ROLL_DICE-')],
                 [sg.Text('The results are:', visible=False, key='-RESULT_TEXT-')],
@@ -25,7 +27,7 @@ def main():
         if event == sg.WIN_CLOSED:
             break
         
-        if values['-DICE-'].isdecimal() and values['-FACES-'].isdecimal():
+        if values['-DICE-'].isdecimal():
             list_dice = roll_dice(int(values['-FACES-']), int(values['-DICE-']))
             dice_dict = create_dice_dict(int(values['-FACES-']))
 
@@ -34,18 +36,18 @@ def main():
 
             result_list = []
             index = 1
-            for index in range(len(dice_dict)):
-                #result_list = index + ": " + dice_dict[index]
-                print("" + str(index) + " " + str(dice_dict[index]))
+            for i in range(len(dice_dict)):
+                if dice_dict[index] > 0 :
+                    result_list.append("{result} : {number}".format(result=index, number=dice_dict[index]))
+
+                index = index + 1
 
             window['-RESULT_TEXT-'].update(visible=True)
             window['-RESULTS-'].update(values=result_list, visible=True)
-            print(dice_dict)
             
         else:
             sg.popup('The inputs are incorrect')
             window['-DICE-'].update(value='')
-            window['-FACES-'].update(value='')
 
     window.close()
 
