@@ -1,2 +1,2 @@
 # dice-generator
-Dice generator coded in oython with PySimpleGui and PyInstaller
+Dice generator coded in python with PySimpleGui and PyInstaller
